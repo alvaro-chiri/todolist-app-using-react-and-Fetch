@@ -11,19 +11,40 @@ const Home = () => {
 
 	const [todoList, settodoList] = useState([]);
 
+
 	const addItem = () => {
 		const newList = [...todoList]
 		newList.push(inputValue)
 		settodoList(newList)
 	}
 
+	const deleteItem = (i) => {
+		const delItem = todoList.filter((element, index) => index != i)
+		settodoList(delItem)
+	}
+
 	return (
-		<div className="Home">
+		<><div className="Home">
 			<Header />
-			<input type="text" onChange={e => setInputValue(e.target.value)} value={inputValue}/>
-			<button onClick={addItem}></button>
-			<List todoList={todoList}/>
+			<input type="text" onChange={e => setInputValue(e.target.value)} value={inputValue} />
+			<button onClick={addItem}>Add</button>
+
 		</div>
+		<div>
+			{todoList.map((item, index) => {
+				return (
+					<><div>
+						{item}
+					</div>
+					<button onClick={() => deleteItem(index)}>Delete</button>
+					</>
+				)
+			})}
+		</div>
+		<div>
+			{todoList.length + " items left"}
+		</div>
+		</>
 	);
 };
 

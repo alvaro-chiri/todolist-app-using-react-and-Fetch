@@ -7,7 +7,7 @@ const List = (props) => {
             <li>item</li>
             <li>item</li>
             <li>item</li>
-            <li>{props.map()}</li>
+            {/* <li>{props.map()}</li> */}
         </ul>
     )
 }
