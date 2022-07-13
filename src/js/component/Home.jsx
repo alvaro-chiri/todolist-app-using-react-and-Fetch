@@ -1,51 +1,94 @@
-import React, { useState }  from "react";
+import React, { useState, useEffect } from "react";
 
 //components
 import Header from "./Header.jsx";
-import List from "./List.jsx"
 
 //create your first component
 const Home = () => {
+  const [inputValue, setInputValue] = useState("");
 
-	const [inputValue, setInputValue] = useState('');
+  const [todoList, settodoList] = useState([]);
 
-	const [todoList, settodoList] = useState([]);
+  const addItem = () => {
+    const newList = [...todoList];
+    newList.push({label: inputValue, done: false});
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+      method: "PUT",
+      body: JSON.stringify(newList),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => {
+        if (resp.status == 200) {
+          return resp.json();
+        }
+      })
+      .then((data) => {
+        //here is were your code should start after the fetch finishes
+        alert(data.result); //this will print on the console the exact object received from the server
+		fetchListItems();
+      })
+      .catch((error) => {
+        //error handling
+        console.log(error);
+      });
+  };
 
+  const deleteItem = (i) => {
+    const delItem = todoList.filter((element, index) => index != i);
+    settodoList(delItem);
+  };
 
-	const addItem = () => {
-		const newList = [...todoList]
-		newList.push(inputValue)
-		settodoList(newList)
-	}
+  useEffect(() => {
+    fetchListItems();
+  }, []);
+  function fetchListItems() {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => {
+        if (resp.status == 200) {
+          return resp.json();
+        }
+      })
+      .then((data) => {
+        settodoList(data); //here is were your code should start after the fetch finishes
+        console.log(data); //this will print on the console the exact object received from the server
+      })
+      .catch((error) => {
+        //error handling
+        console.log(error);
+      });
+  }
 
-	const deleteItem = (i) => {
-		const delItem = todoList.filter((element, index) => index != i)
-		settodoList(delItem)
-	}
-
-	return (
-		<><div className="Home">
-			<Header />
-			<input type="text" onChange={e => setInputValue(e.target.value)} value={inputValue} />
-			<button onClick={addItem}>Add</button>
-
-		</div>
-		<div>
-			{todoList.map((item, index) => {
-				return (
-					<><div>
-						{item}
-					</div>
-					<button onClick={() => deleteItem(index)}>Delete</button>
-					</>
-				)
-			})}
-		</div>
-		<div>
-			{todoList.length + " items left"}
-		</div>
-		</>
-	);
+  return (
+    <>
+      <div className="Home">
+        <Header />
+        <input
+          type="text"
+          onChange={(e) => setInputValue(e.target.value)}
+          value={inputValue}
+        />
+        <button onClick={addItem}>Add</button>
+      </div>
+      <div>
+        {todoList.map((item, index) => {
+          return (
+            <div key={index}>
+              <div>{item.label}</div>
+              <button onClick={() => deleteItem(index)}>X</button>
+            </div>
+          );
+        })}
+      </div>
+      <div>{todoList.length + " items left"}</div>
+    </>
+  );
 };
 
 export default Home;
