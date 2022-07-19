@@ -12,7 +12,7 @@ const Home = () => {
   const addItem = () => {
     const newList = [...todoList];
     newList.push({label: inputValue, done: false});
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
       method: "PUT",
       body: JSON.stringify(newList),
       headers: {
@@ -36,15 +36,27 @@ const Home = () => {
   };
 
   const deleteItem = (i) => {
-    const delItem = todoList.filter((element, index) => index != i);
-    settodoList(delItem);
+    const updatedList= todoList.filter((element, index) => index != i);
+    settodoList(updatedList);
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
+      method: "PUT",
+      body: JSON.stringify(updatedList),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => {
+        if (resp.status == 200) {
+          return resp.json();
+        }
+      })
   };
 
   useEffect(() => {
     fetchListItems();
   }, []);
   function fetchListItems() {
-    fetch("https://assets.breatheco.de/apis/fake/todos/user/alesanchezr", {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
