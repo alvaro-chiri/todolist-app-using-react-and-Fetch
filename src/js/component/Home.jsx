@@ -11,7 +11,7 @@ const Home = () => {
 
   const addItem = () => {
     const newList = [...todoList];
-    newList.push({label: inputValue, done: false});
+    newList.push({ label: inputValue, done: false });
     fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
       method: "PUT",
       body: JSON.stringify(newList),
@@ -27,7 +27,7 @@ const Home = () => {
       .then((data) => {
         //here is were your code should start after the fetch finishes
         alert(data.result); //this will print on the console the exact object received from the server
-		fetchListItems();
+        fetchListItems();
       })
       .catch((error) => {
         //error handling
@@ -36,7 +36,7 @@ const Home = () => {
   };
 
   const deleteItem = (i) => {
-    const updatedList= todoList.filter((element, index) => index != i);
+    const updatedList = todoList.filter((element, index) => index != i);
     settodoList(updatedList);
     fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
       method: "PUT",
@@ -44,12 +44,11 @@ const Home = () => {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((resp) => {
-        if (resp.status == 200) {
-          return resp.json();
-        }
-      })
+    }).then((resp) => {
+      if (resp.status == 200) {
+        return resp.json();
+      }
+    });
   };
 
   useEffect(() => {
@@ -61,7 +60,7 @@ const Home = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([])
+      body: JSON.stringify([]),
     });
   }
   function fetchListItems() {
@@ -79,9 +78,8 @@ const Home = () => {
       .then((data) => {
         if (data != undefined) {
           settodoList(data); //here is were your code should start after the fetch finishes
-        }
-        else {
-          createUser()
+        } else {
+          createUser();
         }
         console.log(data); //this will print on the console the exact object received from the server
       })
@@ -89,6 +87,21 @@ const Home = () => {
         //error handling
         console.log(error);
       });
+  }
+
+  function deleteAll() {
+    const deletedList = [];
+    settodoList(deletedList);
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((resp) => {
+      if (resp.status == 200) {
+        return resp.json();
+      }
+    });
   }
 
   return (
@@ -113,6 +126,7 @@ const Home = () => {
         })}
       </div>
       <div>{todoList.length + " items left"}</div>
+      <button onClick={() => deleteAll()}> Clear List</button>
     </>
   );
 };
