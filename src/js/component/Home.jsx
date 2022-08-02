@@ -55,6 +55,15 @@ const Home = () => {
   useEffect(() => {
     fetchListItems();
   }, []);
+  function createUser() {
+    fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([])
+    });
+  }
   function fetchListItems() {
     fetch("https://assets.breatheco.de/apis/fake/todos/user/alvaro-chiri", {
       method: "GET",
@@ -68,7 +77,12 @@ const Home = () => {
         }
       })
       .then((data) => {
-        settodoList(data); //here is were your code should start after the fetch finishes
+        if (data != undefined) {
+          settodoList(data); //here is were your code should start after the fetch finishes
+        }
+        else {
+          createUser()
+        }
         console.log(data); //this will print on the console the exact object received from the server
       })
       .catch((error) => {
