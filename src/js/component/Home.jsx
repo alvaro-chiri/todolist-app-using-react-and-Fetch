@@ -5,6 +5,7 @@ import Header from "./Header.jsx";
 
 //create your first component
 const Home = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(-1)
   const [inputValue, setInputValue] = useState("");
 
   const [todoList, settodoList] = useState([]);
@@ -106,27 +107,46 @@ const Home = () => {
 
   return (
     <>
-      <div className="Home">
-        <Header />
-        <input
-          type="text"
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-        />
-        <button onClick={addItem}>Add</button>
+      <div className="container">
+        <div className="Home">
+          <Header />
+          <input
+            className="itemInput"
+            type="text"
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+          />
+          <button onClick={addItem}>Add</button>
+        </div>
+        <div>
+          {todoList.map((item, index) => {
+            return (
+              <div className="listItem"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(-1)}>
+                <div
+                key={index}>
+                <div className="addedItem">{item.label}</div>
+                {hoveredIndex === index &&
+                <button
+                  className="delButton"
+                  onClick={() => deleteItem(index)}
+                >
+                  X
+                </button>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <footer>
+          {todoList.length + " items left"}
+          <button className="clearButton" onClick={() => deleteAll()}>
+            {" "}
+            Clear List
+          </button>
+        </footer>
       </div>
-      <div>
-        {todoList.map((item, index) => {
-          return (
-            <div key={index}>
-              <div>{item.label}</div>
-              <button onClick={() => deleteItem(index)}>X</button>
-            </div>
-          );
-        })}
-      </div>
-      <div>{todoList.length + " items left"}</div>
-      <button onClick={() => deleteAll()}> Clear List</button>
     </>
   );
 };

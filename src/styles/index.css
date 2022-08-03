@@ -1,4 +1,51 @@
+body {
+    background-color: rgb(40, 122, 246);
+}
+
 .Home {
     justify-content: center;
     align-items: center; 
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+    background-color: white;
+    width: 500px;
+    border: 2px solid black;
+}
+
+.itemInput {
+    border: 1px solid gray;
+    width: 400px;
+    float: left;
+    background-color: white;
+}
+
+.listItem {
+    border: 1px solid gray;
+    width: 400px;
+    background-color: white;
+    height: 30px;
+}
+
+.addedItem {
+    float: left;
+}
+
+.delButton {
+    float: right;
+}
+
+footer {
+    width: 350px;
+    height: 30px;
+    text-align: left;
+}
+
+.clearButton {
+    float: right;
 }
