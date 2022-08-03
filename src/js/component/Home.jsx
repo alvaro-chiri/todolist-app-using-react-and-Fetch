@@ -27,7 +27,7 @@ const Home = () => {
       })
       .then((data) => {
         //here is were your code should start after the fetch finishes
-        alert(data.result); //this will print on the console the exact object received from the server
+        // alert(data.result); //this will print on the console the exact object received from the server
         fetchListItems();
       })
       .catch((error) => {
